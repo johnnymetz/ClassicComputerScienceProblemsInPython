@@ -15,6 +15,10 @@
 # limitations under the License.
 
 
+nucleotide_to_bits = {"A": 0b00, "C": 0b01, "G": 0b10, "T": 0b11}
+bits_to_nucleotide = {v: k for k, v in nucleotide_to_bits.items()}
+
+
 class CompressedGene:
     def __init__(self, gene: str) -> None:
         self._compress(gene)
@@ -23,16 +27,10 @@ class CompressedGene:
         self.bit_string: int = 1  # start with sentinel
         for nucleotide in gene.upper():
             self.bit_string <<= 2  # shift left two bits
-            if nucleotide == "A":  # change last two bits to 00
-                self.bit_string |= 0b00
-            elif nucleotide == "C":  # change last two bits to 01
-                self.bit_string |= 0b01
-            elif nucleotide == "G":  # change last two bits to 10
-                self.bit_string |= 0b10
-            elif nucleotide == "T":  # change last two bits to 11
-                self.bit_string |= 0b11
-            else:
+            if nucleotide not in nucleotide_to_bits:
                 raise ValueError("Invalid Nucleotide:{}".format(nucleotide))
+            # change last two bits to xx
+            self.bit_string |= nucleotide_to_bits[nucleotide]
 
     def decompress(self) -> str:
         gene: str = ""
@@ -40,16 +38,9 @@ class CompressedGene:
             0, self.bit_string.bit_length() - 1, 2
         ):  # - 1 to exclude sentinel
             bits: int = self.bit_string >> i & 0b11  # get just 2 relevant bits
-            if bits == 0b00:  # A
-                gene += "A"
-            elif bits == 0b01:  # C
-                gene += "C"
-            elif bits == 0b10:  # G
-                gene += "G"
-            elif bits == 0b11:  # T
-                gene += "T"
-            else:
+            if bits not in bits_to_nucleotide:
                 raise ValueError("Invalid bits:{}".format(bits))
+            gene += bits_to_nucleotide[bits]
         return gene[::-1]  # [::-1] reverses string by slicing backwards
 
     def __str__(self) -> str:  # string representation for pretty printing

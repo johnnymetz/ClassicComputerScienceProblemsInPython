@@ -50,7 +50,10 @@ def hanoi(begin: Stack[int], end: Stack[int], temp: Stack[int], n: int) -> None:
 
 
 if __name__ == "__main__":
-    hanoi(tower_a, tower_c, tower_b, num_discs)
+    # The challenge is to move the three discs, one at a time, from tower A to tower C.
+    # The topmost disc of any tower is the only one available for moving.
+    # A larger disc may never be on top of a smaller disc.
+    hanoi(begin=tower_a, end=tower_c, temp=tower_b, n=num_discs)
     print(tower_a)
     print(tower_b)
     print(tower_c)

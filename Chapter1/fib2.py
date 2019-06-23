@@ -22,5 +22,10 @@ def fib2(n: int) -> int:
 
 
 if __name__ == "__main__":
-    print(fib2(5))
-    print(fib2(10))
+    print(fib2(0))  # 0
+    print(fib2(1))  # 1
+    print(fib2(2))  # 1
+    print(fib2(3))  # 2
+    print(fib2(4))  # 3
+    print(fib2(5))  # 5
+    print(fib2(10))  # 55
