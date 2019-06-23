@@ -14,11 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from __future__ import annotations
-from typing import TypeVar, Iterable, Sequence, Generic, List, Callable, Set, Deque, Dict, Any, Optional
+from typing import (
+    TypeVar,
+    Iterable,
+    Sequence,
+    Generic,
+    List,
+    Callable,
+    Set,
+    Deque,
+    Dict,
+    Any,
+    Optional,
+)
 from typing_extensions import Protocol
 from heapq import heappush, heappop
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 def linear_contains(iterable: Iterable[T], key: T) -> bool:
@@ -81,7 +93,13 @@ class Stack(Generic[T]):
 
 
 class Node(Generic[T]):
-    def __init__(self, state: T, parent: Optional[Node], cost: float = 0.0, heuristic: float = 0.0) -> None:
+    def __init__(
+        self,
+        state: T,
+        parent: Optional[Node],
+        cost: float = 0.0,
+        heuristic: float = 0.0,
+    ) -> None:
         self.state: T = state
         self.parent: Optional[Node] = parent
         self.cost: float = cost
@@ -91,7 +109,9 @@ class Node(Generic[T]):
         return (self.cost + self.heuristic) < (other.cost + other.heuristic)
 
 
-def dfs(initial: T, goal_test: Callable[[T], bool], successors: Callable[[T], List[T]]) -> Optional[Node[T]]:
+def dfs(
+    initial: T, goal_test: Callable[[T], bool], successors: Callable[[T], List[T]]
+) -> Optional[Node[T]]:
     # frontier is where we've yet to go
     frontier: Stack[Node[T]] = Stack()
     frontier.push(Node(initial, None))
@@ -142,7 +162,9 @@ class Queue(Generic[T]):
         return repr(self._container)
 
 
-def bfs(initial: T, goal_test: Callable[[T], bool], successors: Callable[[T], List[T]]) -> Optional[Node[T]]:
+def bfs(
+    initial: T, goal_test: Callable[[T], bool], successors: Callable[[T], List[T]]
+) -> Optional[Node[T]]:
     # frontier is where we've yet to go
     frontier: Queue[Node[T]] = Queue()
     frontier.push(Node(initial, None))
@@ -183,7 +205,12 @@ class PriorityQueue(Generic[T]):
         return repr(self._container)
 
 
-def astar(initial: T, goal_test: Callable[[T], bool], successors: Callable[[T], List[T]], heuristic: Callable[[T], float]) -> Optional[Node[T]]:
+def astar(
+    initial: T,
+    goal_test: Callable[[T], bool],
+    successors: Callable[[T], List[T]],
+    heuristic: Callable[[T], float],
+) -> Optional[Node[T]]:
     # frontier is where we've yet to go
     frontier: PriorityQueue[Node[T]] = PriorityQueue()
     frontier.push(Node(initial, None, 0.0, heuristic(initial)))

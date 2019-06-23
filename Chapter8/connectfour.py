@@ -22,7 +22,7 @@ from board import Piece, Board, Move
 class C4Piece(Piece, Enum):
     B = "B"
     R = "R"
-    E = " " # stand-in for empty
+    E = " "  # stand-in for empty
 
     @property
     def opposite(self) -> C4Piece:
@@ -37,7 +37,9 @@ class C4Piece(Piece, Enum):
         return self.value
 
 
-def generate_segments(num_columns: int, num_rows: int, segment_length: int) -> List[List[Tuple[int, int]]]:
+def generate_segments(
+    num_columns: int, num_rows: int, segment_length: int
+) -> List[List[Tuple[int, int]]]:
     segments: List[List[Tuple[int, int]]] = []
     # generate the vertical segments
     for c in range(num_columns):
@@ -77,7 +79,9 @@ class C4Board(Board):
     NUM_ROWS: int = 6
     NUM_COLUMNS: int = 7
     SEGMENT_LENGTH: int = 4
-    SEGMENTS: List[List[Tuple[int, int]]] = generate_segments(NUM_COLUMNS, NUM_ROWS, SEGMENT_LENGTH)
+    SEGMENTS: List[List[Tuple[int, int]]] = generate_segments(
+        NUM_COLUMNS, NUM_ROWS, SEGMENT_LENGTH
+    )
 
     class Column:
         def __init__(self) -> None:
@@ -105,9 +109,13 @@ class C4Board(Board):
             temp._container = self._container.copy()
             return temp
 
-    def __init__(self, position: Optional[List[C4Board.Column]] = None, turn: C4Piece = C4Piece.B) -> None:
+    def __init__(
+        self, position: Optional[List[C4Board.Column]] = None, turn: C4Piece = C4Piece.B
+    ) -> None:
         if position is None:
-            self.position: List[C4Board.Column] = [C4Board.Column() for _ in range(C4Board.NUM_COLUMNS)]
+            self.position: List[C4Board.Column] = [
+                C4Board.Column() for _ in range(C4Board.NUM_COLUMNS)
+            ]
         else:
             self.position = position
         self._turn: C4Piece = turn
@@ -125,7 +133,9 @@ class C4Board(Board):
 
     @property
     def legal_moves(self) -> List[Move]:
-        return [Move(c) for c in range(C4Board.NUM_COLUMNS) if not self.position[c].full]
+        return [
+            Move(c) for c in range(C4Board.NUM_COLUMNS) if not self.position[c].full
+        ]
 
     # Returns the count of black & red pieces in a segment
     def _count_segment(self, segment: List[Tuple[int, int]]) -> Tuple[int, int]:
@@ -149,7 +159,7 @@ class C4Board(Board):
     def _evaluate_segment(self, segment: List[Tuple[int, int]], player: Piece) -> float:
         black_count, red_count = self._count_segment(segment)
         if red_count > 0 and black_count > 0:
-            return 0 # mixed segments are neutral
+            return 0  # mixed segments are neutral
         count: int = max(red_count, black_count)
         score: float = 0
         if count == 2:
@@ -179,4 +189,3 @@ class C4Board(Board):
                 display += f"{self.position[c][r]}" + "|"
             display += "\n"
         return display
-

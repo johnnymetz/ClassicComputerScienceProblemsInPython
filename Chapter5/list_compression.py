@@ -24,7 +24,21 @@ from sys import getsizeof
 from pickle import dumps
 
 # 165 bytes compressed
-PEOPLE: List[str] = ["Michael", "Sarah", "Joshua", "Narine", "David", "Sajid", "Melanie", "Daniel", "Wei", "Dean", "Brian", "Murat", "Lisa"]
+PEOPLE: List[str] = [
+    "Michael",
+    "Sarah",
+    "Joshua",
+    "Narine",
+    "David",
+    "Sajid",
+    "Melanie",
+    "Daniel",
+    "Wei",
+    "Dean",
+    "Brian",
+    "Murat",
+    "Lisa",
+]
 
 
 class ListCompression(Chromosome):
@@ -44,7 +58,9 @@ class ListCompression(Chromosome):
         shuffle(mylst)
         return ListCompression(mylst)
 
-    def crossover(self, other: ListCompression) -> Tuple[ListCompression, ListCompression]:
+    def crossover(
+        self, other: ListCompression
+    ) -> Tuple[ListCompression, ListCompression]:
         child1: ListCompression = deepcopy(self)
         child2: ListCompression = deepcopy(other)
         idx1, idx2 = sample(range(len(self.lst)), k=2)
@@ -53,7 +69,7 @@ class ListCompression(Chromosome):
         child2.lst[child2.lst.index(l1)], child2.lst[idx1] = child2.lst[idx1], l1
         return child1, child2
 
-    def mutate(self) -> None: # swap two locations
+    def mutate(self) -> None:  # swap two locations
         idx1, idx2 = sample(range(len(self.lst)), k=2)
         self.lst[idx1], self.lst[idx2] = self.lst[idx2], self.lst[idx1]
 
@@ -62,8 +78,17 @@ class ListCompression(Chromosome):
 
 
 if __name__ == "__main__":
-    initial_population: List[ListCompression] = [ListCompression.random_instance() for _ in range(100)]
-    ga: GeneticAlgorithm[ListCompression] = GeneticAlgorithm(initial_population=initial_population, threshold=1.0, max_generations = 100, mutation_chance = 0.2, crossover_chance = 0.7, selection_type=GeneticAlgorithm.SelectionType.TOURNAMENT)
+    initial_population: List[ListCompression] = [
+        ListCompression.random_instance() for _ in range(100)
+    ]
+    ga: GeneticAlgorithm[ListCompression] = GeneticAlgorithm(
+        initial_population=initial_population,
+        threshold=1.0,
+        max_generations=100,
+        mutation_chance=0.2,
+        crossover_chance=0.7,
+        selection_type=GeneticAlgorithm.SelectionType.TOURNAMENT,
+    )
     result: ListCompression = ga.run()
     print(result)
 

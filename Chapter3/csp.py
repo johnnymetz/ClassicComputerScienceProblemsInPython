@@ -16,8 +16,8 @@
 from typing import Generic, TypeVar, Dict, List, Optional
 from abc import ABC, abstractmethod
 
-V = TypeVar('V') # variable type
-D = TypeVar('D') # domain type
+V = TypeVar("V")  # variable type
+D = TypeVar("D")  # domain type
 
 
 # Base class for all constraints
@@ -37,8 +37,8 @@ class Constraint(Generic[V, D], ABC):
 # that determine whether a particular variable's domain selection is valid
 class CSP(Generic[V, D]):
     def __init__(self, variables: List[V], domains: Dict[V, List[D]]) -> None:
-        self.variables: List[V] = variables # variables to be constrained
-        self.domains: Dict[V, List[D]] = domains # domain of each variable
+        self.variables: List[V] = variables  # variables to be constrained
+        self.domains: Dict[V, List[D]] = domains  # domain of each variable
         self.constraints: Dict[V, List[Constraint[V, D]]] = {}
         for variable in self.variables:
             self.constraints[variable] = []
@@ -75,7 +75,9 @@ class CSP(Generic[V, D]):
             local_assignment[first] = value
             # if we're still consistent, we recurse (continue)
             if self.consistent(first, local_assignment):
-                result: Optional[Dict[V, D]] = self.backtracking_search(local_assignment)
+                result: Optional[Dict[V, D]] = self.backtracking_search(
+                    local_assignment
+                )
                 # if we didn't find the result, we will end up backtracking
                 if result is not None:
                     return result

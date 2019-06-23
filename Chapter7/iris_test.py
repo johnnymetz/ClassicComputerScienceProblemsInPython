@@ -23,9 +23,9 @@ if __name__ == "__main__":
     iris_parameters: List[List[float]] = []
     iris_classifications: List[List[float]] = []
     iris_species: List[str] = []
-    with open('iris.csv', mode='r') as iris_file:
+    with open("iris.csv", mode="r") as iris_file:
         irises: List = list(csv.reader(iris_file))
-        shuffle(irises) # get our lines of data in random order
+        shuffle(irises)  # get our lines of data in random order
         for iris in irises:
             parameters: List[float] = [float(n) for n in iris[0:4]]
             iris_parameters.append(parameters)
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     # test over the last 10 of the irises in the data set
     iris_testers: List[List[float]] = iris_parameters[140:150]
     iris_testers_corrects: List[str] = iris_species[140:150]
-    iris_results = iris_network.validate(iris_testers, iris_testers_corrects, iris_interpret_output)
+    iris_results = iris_network.validate(
+        iris_testers, iris_testers_corrects, iris_interpret_output
+    )
     print(f"{iris_results[0]} correct of {iris_results[1]} = {iris_results[2] * 100}%")
-
-

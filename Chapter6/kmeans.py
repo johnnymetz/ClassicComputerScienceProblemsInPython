@@ -26,12 +26,12 @@ from data_point import DataPoint
 def zscores(original: Sequence[float]) -> List[float]:
     avg: float = mean(original)
     std: float = pstdev(original)
-    if std == 0: # return all zeros if there is no variation
+    if std == 0:  # return all zeros if there is no variation
         return [0] * len(original)
     return [(x - avg) / std for x in original]
 
 
-Point = TypeVar('Point', bound=DataPoint)
+Point = TypeVar("Point", bound=DataPoint)
 
 
 class KMeans(Generic[Point]):
@@ -41,7 +41,7 @@ class KMeans(Generic[Point]):
         centroid: DataPoint
 
     def __init__(self, k: int, points: List[Point]) -> None:
-        if k < 1: # k-means can't do negative or zero clusters
+        if k < 1:  # k-means can't do negative or zero clusters
             raise ValueError("k must be >= 1")
         self._points: List[Point] = points
         self._zscore_normalize()
@@ -79,7 +79,9 @@ class KMeans(Generic[Point]):
     # Find the closest cluster centroid to each point and assign the point to that cluster
     def _assign_clusters(self) -> None:
         for point in self._points:
-            closest: DataPoint = min(self._centroids, key=partial(DataPoint.distance, point))
+            closest: DataPoint = min(
+                self._centroids, key=partial(DataPoint.distance, point)
+            )
             idx: int = self._centroids.index(closest)
             cluster: KMeans.Cluster = self._clusters[idx]
             cluster.points.append(point)
@@ -87,22 +89,24 @@ class KMeans(Generic[Point]):
     # Find the center of each cluster and move the centroid to there
     def _generate_centroids(self) -> None:
         for cluster in self._clusters:
-            if len(cluster.points) == 0: # keep the same centroid if no points
+            if len(cluster.points) == 0:  # keep the same centroid if no points
                 continue
             means: List[float] = []
             for dimension in range(cluster.points[0].num_dimensions):
-                dimension_slice: List[float] = [p.dimensions[dimension] for p in cluster.points]
+                dimension_slice: List[float] = [
+                    p.dimensions[dimension] for p in cluster.points
+                ]
                 means.append(mean(dimension_slice))
             cluster.centroid = DataPoint(means)
 
     def run(self, max_iterations: int = 100) -> List[KMeans.Cluster]:
         for iteration in range(max_iterations):
-            for cluster in self._clusters: # clear all clusters
+            for cluster in self._clusters:  # clear all clusters
                 cluster.points.clear()
-            self._assign_clusters() # find cluster each point is closest to
-            old_centroids: List[DataPoint] = deepcopy(self._centroids) # record
-            self._generate_centroids() # find new centroids
-            if old_centroids == self._centroids: # have centroids moved?
+            self._assign_clusters()  # find cluster each point is closest to
+            old_centroids: List[DataPoint] = deepcopy(self._centroids)  # record
+            self._generate_centroids()  # find new centroids
+            if old_centroids == self._centroids:  # have centroids moved?
                 print(f"Converged after {iteration} iterations")
                 return self._clusters
         return self._clusters

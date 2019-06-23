@@ -17,7 +17,7 @@ from typing import TypeVar, Generic, List, Optional
 from edge import Edge
 
 
-V = TypeVar('V') # type of the vertices in the graph
+V = TypeVar("V")  # type of the vertices in the graph
 
 
 class Graph(Generic[V]):
@@ -27,17 +27,17 @@ class Graph(Generic[V]):
 
     @property
     def vertex_count(self) -> int:
-        return len(self._vertices) # Number of vertices
+        return len(self._vertices)  # Number of vertices
 
     @property
     def edge_count(self) -> int:
-        return sum(map(len, self._edges)) # Number of edges
+        return sum(map(len, self._edges))  # Number of edges
 
     # Add a vertex to the graph and return its index
     def add_vertex(self, vertex: V) -> int:
         self._vertices.append(vertex)
-        self._edges.append([]) # add empty list for containing edges
-        return self.vertex_count - 1 # return index of added vertex
+        self._edges.append([])  # add empty list for containing edges
+        return self.vertex_count - 1  # return index of added vertex
 
     # This is an undirected graph,
     # so we always add edges in both directions
@@ -90,7 +90,25 @@ class Graph(Generic[V]):
 
 if __name__ == "__main__":
     # test basic Graph construction
-    city_graph: Graph[str] = Graph(["Seattle", "San Francisco", "Los Angeles", "Riverside", "Phoenix", "Chicago", "Boston", "New York", "Atlanta", "Miami", "Dallas", "Houston", "Detroit", "Philadelphia", "Washington"])
+    city_graph: Graph[str] = Graph(
+        [
+            "Seattle",
+            "San Francisco",
+            "Los Angeles",
+            "Riverside",
+            "Phoenix",
+            "Chicago",
+            "Boston",
+            "New York",
+            "Atlanta",
+            "Miami",
+            "Dallas",
+            "Houston",
+            "Detroit",
+            "Philadelphia",
+            "Washington",
+        ]
+    )
     city_graph.add_edge_by_vertices("Seattle", "Chicago")
     city_graph.add_edge_by_vertices("Seattle", "San Francisco")
     city_graph.add_edge_by_vertices("San Francisco", "Riverside")
@@ -121,14 +139,18 @@ if __name__ == "__main__":
 
     # Reuse BFS from Chapter 2 on city_graph
     import sys
-    sys.path.insert(0, '..') # so we can access the Chapter2 package in the parent directory
+
+    sys.path.insert(
+        0, ".."
+    )  # so we can access the Chapter2 package in the parent directory
     from Chapter2.generic_search import bfs, Node, node_to_path
 
-    bfs_result: Optional[Node[V]] = bfs("Boston", lambda x: x == "Miami", city_graph.neighbors_for_vertex)
+    bfs_result: Optional[Node[V]] = bfs(
+        "Boston", lambda x: x == "Miami", city_graph.neighbors_for_vertex
+    )
     if bfs_result is None:
         print("No solution found using breadth-first search!")
     else:
         path: List[V] = node_to_path(bfs_result)
         print("Path from Boston to Miami:")
         print(path)
-

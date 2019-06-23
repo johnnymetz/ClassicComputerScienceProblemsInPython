@@ -22,7 +22,7 @@ from board import Piece, Board, Move
 class TTTPiece(Piece, Enum):
     X = "X"
     O = "O"
-    E = " " # stand-in for empty
+    E = " "  # stand-in for empty
 
     @property
     def opposite(self) -> TTTPiece:
@@ -38,7 +38,9 @@ class TTTPiece(Piece, Enum):
 
 
 class TTTBoard(Board):
-    def __init__(self, position: List[TTTPiece] = [TTTPiece.E] * 9, turn: TTTPiece = TTTPiece.X) -> None:
+    def __init__(
+        self, position: List[TTTPiece] = [TTTPiece.E] * 9, turn: TTTPiece = TTTPiece.X
+    ) -> None:
         self.position: List[TTTPiece] = position
         self._turn: TTTPiece = turn
 
@@ -53,19 +55,39 @@ class TTTBoard(Board):
 
     @property
     def legal_moves(self) -> List[Move]:
-        return [Move(l) for l in range(len(self.position)) if self.position[l] == TTTPiece.E]
+        return [
+            Move(l) for l in range(len(self.position)) if self.position[l] == TTTPiece.E
+        ]
 
     @property
     def is_win(self) -> bool:
         # three row, three column, and then two diagonal checks
-        return self.position[0] == self.position[1] and self.position[0] == self.position[2] and self.position[0] != TTTPiece.E or \
-        self.position[3] == self.position[4] and self.position[3] == self.position[5] and self.position[3] != TTTPiece.E or \
-        self.position[6] == self.position[7] and self.position[6] == self.position[8] and self.position[6] != TTTPiece.E or \
-        self.position[0] == self.position[3] and self.position[0] == self.position[6] and self.position[0] != TTTPiece.E or \
-        self.position[1] == self.position[4] and self.position[1] == self.position[7] and self.position[1] != TTTPiece.E or \
-        self.position[2] == self.position[5] and self.position[2] == self.position[8] and self.position[2] != TTTPiece.E or \
-        self.position[0] == self.position[4] and self.position[0] == self.position[8] and self.position[0] != TTTPiece.E or \
-        self.position[2] == self.position[4] and self.position[2] == self.position[6] and self.position[2] != TTTPiece.E
+        return (
+            self.position[0] == self.position[1]
+            and self.position[0] == self.position[2]
+            and self.position[0] != TTTPiece.E
+            or self.position[3] == self.position[4]
+            and self.position[3] == self.position[5]
+            and self.position[3] != TTTPiece.E
+            or self.position[6] == self.position[7]
+            and self.position[6] == self.position[8]
+            and self.position[6] != TTTPiece.E
+            or self.position[0] == self.position[3]
+            and self.position[0] == self.position[6]
+            and self.position[0] != TTTPiece.E
+            or self.position[1] == self.position[4]
+            and self.position[1] == self.position[7]
+            and self.position[1] != TTTPiece.E
+            or self.position[2] == self.position[5]
+            and self.position[2] == self.position[8]
+            and self.position[2] != TTTPiece.E
+            or self.position[0] == self.position[4]
+            and self.position[0] == self.position[8]
+            and self.position[0] != TTTPiece.E
+            or self.position[2] == self.position[4]
+            and self.position[2] == self.position[6]
+            and self.position[2] != TTTPiece.E
+        )
 
     def evaluate(self, player: Piece) -> float:
         if self.is_win and self.turn == player:

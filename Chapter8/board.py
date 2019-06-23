@@ -17,7 +17,7 @@ from __future__ import annotations
 from typing import NewType, List
 from abc import ABC, abstractmethod
 
-Move = NewType('Move', int)
+Move = NewType("Move", int)
 
 
 class Piece:
@@ -53,4 +53,3 @@ class Board(ABC):
     @abstractmethod
     def evaluate(self, player: Piece) -> float:
         ...
-

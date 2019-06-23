@@ -41,7 +41,7 @@ class SendMoreMoneyConstraint(Constraint[str, int]):
             more: int = m * 1000 + o * 100 + r * 10 + e
             money: int = m * 10000 + o * 1000 + n * 100 + e * 10 + y
             return send + more == money
-        return True # no conflict
+        return True  # no conflict
 
 
 if __name__ == "__main__":

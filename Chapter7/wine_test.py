@@ -23,9 +23,9 @@ if __name__ == "__main__":
     wine_parameters: List[List[float]] = []
     wine_classifications: List[List[float]] = []
     wine_species: List[int] = []
-    with open('wine.csv', mode='r') as wine_file:
+    with open("wine.csv", mode="r") as wine_file:
         wines: List = list(csv.reader(wine_file, quoting=csv.QUOTE_NONNUMERIC))
-        shuffle(wines) # get our lines of data in random order
+        shuffle(wines)  # get our lines of data in random order
         for wine in wines:
             parameters: List[float] = [float(n) for n in wine[1:14]]
             wine_parameters.append(parameters)
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     # test over the last 28 of the wines in the data set
     wine_testers: List[List[float]] = wine_parameters[150:178]
     wine_testers_corrects: List[int] = wine_species[150:178]
-    wine_results = wine_network.validate(wine_testers, wine_testers_corrects, wine_interpret_output)
+    wine_results = wine_network.validate(
+        wine_testers, wine_testers_corrects, wine_interpret_output
+    )
     print(f"{wine_results[0]} correct of {wine_results[1]} = {wine_results[2] * 100}%")
-
-

@@ -17,7 +17,7 @@ from typing import TypeVar, Generic, List
 from heapq import heappush, heappop
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class PriorityQueue(Generic[T]):

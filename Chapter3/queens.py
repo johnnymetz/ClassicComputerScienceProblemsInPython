@@ -28,12 +28,12 @@ class QueensConstraint(Constraint[int, int]):
             # q2c = queen 2 column
             for q2c in range(q1c + 1, len(self.columns) + 1):
                 if q2c in assignment:
-                    q2r: int = assignment[q2c] # q2r = queen 2 row
-                    if q1r == q2r: # same row?
+                    q2r: int = assignment[q2c]  # q2r = queen 2 row
+                    if q1r == q2r:  # same row?
                         return False
-                    if abs(q1r - q2r) == abs(q1c - q2c): # same diagonal?
+                    if abs(q1r - q2r) == abs(q1c - q2c):  # same diagonal?
                         return False
-        return True # no conflict
+        return True  # no conflict
 
 
 if __name__ == "__main__":
