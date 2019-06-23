@@ -20,11 +20,11 @@ def fib6(n: int) -> Generator[int, None, None]:
     yield 0  # special case
     if n > 0:
         yield 1  # special case
-    last_item: int = 0  # initially set to fib(0)
-    next_item: int = 1  # initially set to fib(1)
+    last: int = 0  # initially set to fib(0)
+    nxt: int = 1  # initially set to fib(1)
     for _ in range(1, n):
-        last_item, next_item = next_item, last_item + next_item
-        yield next_item  # main generation step
+        last, nxt = nxt, last + nxt
+        yield nxt  # main generation step
 
 
 if __name__ == "__main__":

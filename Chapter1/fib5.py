@@ -16,14 +16,14 @@
 def fib5(n: int) -> int:
     if n == 0:
         return n  # special case
-    last_item: int = 0  # initially set to fib(0)
-    next_item: int = 1  # initially set to fib(1)
+    last: int = 0  # initially set to fib(0)
+    nxt: int = 1  # initially set to fib(1)
     for _ in range(1, n):
-        last_item, next_item = next_item, last_item + next_item
-        # last_copy = last_item
-        # last_item = next_item
-        # next_item = last_copy + next_item
-    return next_item
+        last, nxt = nxt, last + nxt
+        # last_copy = last
+        # last = nxt
+        # nxt = last_copy + nxt
+    return nxt
 
 
 if __name__ == "__main__":
