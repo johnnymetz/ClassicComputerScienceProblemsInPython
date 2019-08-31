@@ -28,39 +28,56 @@ def string_to_gene(s: str) -> Gene:
     for i in range(0, len(s), 3):
         if (i + 2) >= len(s):  # don't run off end!
             return gene
-        #  initialize codon out of three nucleotides
+        # initialize codon out of three nucleotides
         codon: Codon = (Nucleotide[s[i]], Nucleotide[s[i + 1]], Nucleotide[s[i + 2]])
         gene.append(codon)  # add codon to gene
     return gene
 
 
 my_gene: Gene = string_to_gene(gene_str)
+# print(my_gene)
+acg: Codon = (Nucleotide.A, Nucleotide.C, Nucleotide.G)
+gat: Codon = (Nucleotide.G, Nucleotide.A, Nucleotide.T)
 
 
 def linear_contains(gene: Gene, key_codon: Codon) -> bool:
-    for codon in gene:
-        if codon == key_codon:
-            return True
+    """
+    LINEAR SEARCH (aka sequential search) - O(n)
+
+    Check every element in iterable until target element is found.
+    """
+    # for codon in gene:
+    #     if codon == key_codon:
+    #         return True
+    if key_codon in gene:
+        return True
     return False
 
 
-acg: Codon = (Nucleotide.A, Nucleotide.C, Nucleotide.G)
-gat: Codon = (Nucleotide.G, Nucleotide.A, Nucleotide.T)
 print(linear_contains(my_gene, acg))  # True
 print(linear_contains(my_gene, gat))  # False
 
 
 def binary_contains(gene: Gene, key_codon: Codon) -> bool:
+    """
+    BINARY SEARCH (half-interval search) - O(lg n)
+
+    Check middle element, reduce range by half based on comparison to target element.
+    Iterable must be sorted to start.
+    """
     low: int = 0
     high: int = len(gene) - 1
     while low <= high:  # while there is still a search space
         mid: int = (low + high) // 2
+        print(low, high, mid)
         if gene[mid] < key_codon:
             low = mid + 1
         elif gene[mid] > key_codon:
             high = mid - 1
         else:
+            assert gene[mid] == key_codon
             return True
+        print(low, high)
     return False
 
 
